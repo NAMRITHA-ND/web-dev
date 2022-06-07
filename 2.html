@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Tiles</title>
+    <style>
+        .body
+        {
+            margin:0px;
+            background-color: rgb(25, 151, 19);
+        }
+        .intro
+        {
+            margin: 0px;
+            padding:10px;
+            text-align: center;
+            text-decoration: wavy;
+            background-color: rgb(237, 100, 100);
+            font-display: small-caps;
+        }
+        .div1
+        {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+        .div2
+        {
+            width:450px;
+        }
+        .button
+        {
+            background-color: rgb(38, 30, 30);
+            padding:40px;
+            margin:10px;
+        }
+
+    </style>
+</head>
+<body class="body" id="body">
+    
+    <div class="div1" class="div2">
+        <div class="div2" id="div2"></div>
+        <div id="score"></div>
+    </div>
+    <script>
+        let level=1;
+        let click_loop=0;
+        let rand=[];
+        let click=[];
+        for(i=0;i<16;i++)
+        {
+            rand[i]=Math.floor(Math.random() *16);
+        }
+        div2=document.getElementById('div2');
+        for(j=0;j<16;j++)
+        {
+            div2.innerHTML+=`<button class="button" id="button${j}" onclick="clicked(${j})"></button>`;
+        }
+        function clicked(ind)
+        {
+            click[click_loop]=ind;
+            click_loop=click_loop+1;
+        }
+        function func_loop(level)
+        {
+            click=[];
+            for(k=0;k<level;k++)
+            {
+                
+                setTimeout(func,500*k,rand[k]);
+            }
+            function func(ind2)
+            {
+                document.getElementById(`button${ind2}`).style="background-color:blue;";
+                setTimeout(func2,1000,ind2)
+            }
+            function func2(Ind1)
+            {
+                document.getElementById(`button${Ind1}`).style="background-color:rgb(38, 30, 30);";
+            } 
+            setInterval(check,1200*level);
+            
+        }
+        function check()
+        {
+            let temp=1;
+            for(l=0;l<level;l++)
+            {
+                if(rand[l]!=click[l])
+                {
+                    temp=0;
+                }
+            }
+            if(temp==1)
+            {
+                document.getElementById('score').innerHTML=`<h1>score is ${level-1}</h1>`;
+                level=level+1;
+                click_loop=0;
+                func_loop(level);
+            }
+        }
+        func_loop(level);
+
+    </script>
+    
+</body>
+</html>
+
